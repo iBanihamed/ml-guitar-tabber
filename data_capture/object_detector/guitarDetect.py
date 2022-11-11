@@ -15,7 +15,7 @@ from google.protobuf.json_format import MessageToDict
 
 class LineDetector():
     def __init__(self) -> None:
-        self.imgOutputDir = "/Users/vn53q3k/OneDriveWalmartInc/MLPython/guitarTabber/data_capture/transformed_images"
+        self.imgOutputDir = "./data_capture/transformed_images"
         pass
 
     def vertLineDetect(self, image):
