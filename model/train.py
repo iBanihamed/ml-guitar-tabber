@@ -28,12 +28,10 @@ n_epochs = 30
 
 torch.manual_seed(24)
 
-data_set_folder = "/mnt/disks/disk1/ImgScreenshots"
-model_path = "/mnt/disks/disk1"
-data_set_folder = "/tmp/ImgScreenshots"
-model_path = "/Users/vn53q3k/OneDriveWalmartInc/MLPython/dl-test-automation/trained_models"
+data_set_folder = "/tmp/GuitarImages"
+model_path = "./trained_models"
 # out_model = f'{model_path}/model_ta_{strftime("%Y.%m.%d.%H.%M.%S", gmtime())}.pt'
-out_model = f"{model_path}/model_taObjects.pt"
+out_model = f"{model_path}/model_guitar_tabber.pt"
 
 
 # data_set_folder = "/home/jupyter/data/screenshots2/screenshots"
