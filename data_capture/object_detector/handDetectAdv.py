@@ -4,6 +4,11 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
+handCordAmount = 21
+padding = 50
+xHandCords = [None]*handCordAmount
+yHandCords = [None]*handCordAmount
+
 # For static images:
 IMAGE_FILES = []
 with mp_hands.Hands(
@@ -53,6 +58,7 @@ with mp_hands.Hands(
     min_tracking_confidence=0.5) as hands:
   while cap.isOpened():
     success, image = cap.read()
+    image_height, image_width, _ = image.shape
     image = cv2.flip(image, 1)
     if not success:
       print("Ignoring empty camera frame.")
@@ -76,14 +82,29 @@ with mp_hands.Hands(
             mp_hands.HAND_CONNECTIONS,
             mp_drawing_styles.get_default_hand_landmarks_style(),
             mp_drawing_styles.get_default_hand_connections_style())
+        for ids, landmrk in enumerate(hand_landmarks.landmark):
+            # print(ids, landmrk)
+            #cx, cy = landmrk.x * image_width, landmrk.y*image_height
+            cx, cy = landmrk.x, landmrk.y
+            xHandCords[ids] = cx
+            yHandCords[ids] = cy
+            #print(cx, cy)
+            print (ids, cx, cy)
+        xHandCordMax = int(max(xHandCords)*image_width)
+        yHandCordMax = int(max(yHandCords)*image_height)
+        xHandCordMin = int(min(xHandCords)*image_width)
+        yHandCordMin = int(min(yHandCords)*image_height)
     # Flip the image horizontally for a selfie-view display.
+        handCropped = image[yHandCordMin-padding:yHandCordMin + (yHandCordMax-yHandCordMin)+padding, xHandCordMin- padding:xHandCordMin + (xHandCordMax-xHandCordMin)+ padding]
+        cv2.imshow('Cropped Hands', handCropped)
+      #cv2.imshow("Cropped Hand", handCropped)
     
     cv2.putText(image, ' Hand',
                                 (20, 50),
                                 cv2.FONT_HERSHEY_COMPLEX,
                                 0.9, (0, 255, 0), 2)
-                                
     cv2.imshow('MediaPipe Hands', image)
+    
     if cv2.waitKey(5) & 0xFF == 27:
       break  
 cap.release()
