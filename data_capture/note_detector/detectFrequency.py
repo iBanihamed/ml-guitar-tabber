@@ -6,10 +6,9 @@ import numpy as np
 chunk = 2048
 
 # open up a wave
-wf = wave.open('C:\\Users\\Jorge\\Documents\\GuitarProject\\ml-guitar-tabber\\data_capture\\note_detector\\StandByMe.wav', 'rb')
+wf = wave.open('C:\\Users\\Jorge\\Documents\\GuitarProject\\ml-guitar-tabber\\data_capture\\note_detector\\file.wav', 'rb')
 # Returns sample width in bytes
 swidth = wf.getsampwidth()
-print("Sample width = ", swidth)
 # Returns sampling frequency
 RATE = wf.getframerate()
 # use a Blackman window
@@ -21,12 +20,11 @@ stream = p.open(format =
                 channels = wf.getnchannels(),
                 rate = RATE,
                 output = True)
+print("Number of channels: ", wf.getnchannels())
 # read some data
 data = wf.readframes(chunk)
 # play stream and find the frequency of each chunk
-print("Length of data ", len(data))
 while len(data) == chunk*swidth:
-    print("enter while")
     # write data out to the audio stream
     stream.write(data)
     # unpack the data and times by the hamming window
@@ -43,11 +41,9 @@ while len(data) == chunk*swidth:
         # find the frequency and output it
         thefreq = (which+x1)*RATE/chunk
         print("The freq is %f Hz." %(thefreq))
-        print("yes")
     else:
         thefreq = which*RATE/chunk
         print("The freq is %f Hz." %(thefreq))
-        print("no")
     # read some more data
     data = wf.readframes(chunk)
 if data:
