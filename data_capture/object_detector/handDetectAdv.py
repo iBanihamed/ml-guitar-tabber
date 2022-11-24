@@ -5,9 +5,11 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
 handCordAmount = 21
-padding = 50
+padding = 25
 xHandCords = [None]*handCordAmount
 yHandCords = [None]*handCordAmount
+count = 0
+captured_frames="./data_capture/captured_frames"
 
 # For static images:
 IMAGE_FILES = []
@@ -89,20 +91,27 @@ with mp_hands.Hands(
             xHandCords[ids] = cx
             yHandCords[ids] = cy
             #print(cx, cy)
-            print (ids, cx, cy)
-        xHandCordMax = int(max(xHandCords)*image_width)
-        yHandCordMax = int(max(yHandCords)*image_height)
-        xHandCordMin = int(min(xHandCords)*image_width)
-        yHandCordMin = int(min(yHandCords)*image_height)
-    # Flip the image horizontally for a selfie-view display.
-        handCropped = image[yHandCordMin-padding:yHandCordMin + (yHandCordMax-yHandCordMin)+padding, xHandCordMin- padding:xHandCordMin + (xHandCordMax-xHandCordMin)+ padding]
+            # print (ids, cx, cy)
+      xHandCordMax = int(max(xHandCords)*image_width)
+      yHandCordMax = int(max(yHandCords)*image_height)
+      xHandCordMin = int(min(xHandCords)*image_width)
+      yHandCordMin = int(min(yHandCords)*image_height)
+      cropX = xHandCordMin-padding
+      cropWidth = xHandCordMin + (xHandCordMax-xHandCordMin) + padding
+      cropY = yHandCordMin-padding
+      cropHeight = yHandCordMin + (yHandCordMax-yHandCordMin) + padding
+      print(xHandCordMin)
+      print(yHandCordMin)
+      if (xHandCordMin > padding and yHandCordMin > padding):
+        handCropped = image[cropY:cropHeight, cropX:cropWidth]
         cv2.imshow('Cropped Hands', handCropped)
+
+        # cv2.imwrite(f"{captured_frames}/handFrame{count}.jpg", handCropped)
+        # print(f'Captured frame {count}: ', success)
+        #count+=1
+      if yHandCordMax > image_height or xHandCordMax > image_width or xHandCordMin< padding or yHandCordMin < padding:
+        cv2.destroyWindow('Cropped Hands')
       #cv2.imshow("Cropped Hand", handCropped)
-    
-    cv2.putText(image, ' Hand',
-                                (20, 50),
-                                cv2.FONT_HERSHEY_COMPLEX,
-                                0.9, (0, 255, 0), 2)
     cv2.imshow('MediaPipe Hands', image)
     
     if cv2.waitKey(5) & 0xFF == 27:
