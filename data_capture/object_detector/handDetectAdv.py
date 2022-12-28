@@ -100,8 +100,6 @@ with mp_hands.Hands(
       cropWidth = xHandCordMin + (xHandCordMax-xHandCordMin) + padding
       cropY = yHandCordMin-padding
       cropHeight = yHandCordMin + (yHandCordMax-yHandCordMin) + padding
-      print(xHandCordMin)
-      print(yHandCordMin)
       if (xHandCordMin > padding and yHandCordMin > padding):
         handCropped = image[cropY:cropHeight, cropX:cropWidth]
         cv2.imshow('Cropped Hands', handCropped)
