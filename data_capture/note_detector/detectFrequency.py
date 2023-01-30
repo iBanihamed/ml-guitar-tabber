@@ -114,10 +114,29 @@ notes = [
     ['B8', 7902.13, []],
 ]
 
+def findNote(freq):
+
+    note = 'C0'
+
+    # Iterate through each note's frequency
+    for x in range(108):
+        if(freq <= notes[x][1]):
+            
+            diff1 = notes[x][1] - freq
+            diff2 = freq - notes[x-1][1]
+            if(diff1 <= diff2):
+                note = notes[x][0]
+            else :
+                note = notes[x-1][0]
+            break
+
+    return note 
+
+
 chunk = 2048
 
 # open up a wave
-wf = wave.open('./data_capture/note_detector/audio_files/12tet_diatonic_scale.wav', 'rb')
+wf = wave.open('C:\\Users\\Jorge\\Documents\\GuitarProject\\ml-guitar-tabber\\data_capture\\note_detector\\file.wav', 'rb')
 # Returns sample width in bytes
 swidth = wf.getsampwidth()
 # Returns sampling frequency
@@ -138,7 +157,7 @@ stream = p.open(format =
                 channels = wf.getnchannels(),
                 rate = RATE,
                 output = True)
-#print("Number of channels: ", wf.getnchannels())
+print("Number of channels: ", wf.getnchannels())
 
 # read some data
 data = wf.readframes(chunk)
@@ -167,22 +186,24 @@ while len(data) == chunk*swidth:
     # find the maximum
     which = fftData[1:].argmax() + 1
     # use quadratic interpolation around the max
+    # updates every 50ms
     if which != len(fftData)-1:
         y0,y1,y2 = np.log(fftData[which-1:which+2:])
         x1 = (y2 - y0) * .5 / (2 * y1 - y2 - y0)
         # find the frequency and output it
         thefreq = (which+x1)*RATE/chunk
-        print("The freq is %f Hz." %(thefreq), "\n")
+        print("The freq is %f Hz." %(thefreq))
     else:
         thefreq = which*RATE/chunk
-        print("The freq is %f Hz." %(thefreq), "\n")
+        print("The freq is %f Hz." %(thefreq))
 
-    # Average frequencies after x amount of seconds
-    sumfreq = sumfreq + thefreq
-    if(count == 5):
-        avgfreq = sumfreq/count
-        count = 0
-        print("Note is: ", findNote(avgfreq))
+    # # Average frequencies after x amount of seconds
+    # sumfreq = sumfreq + thefreq
+    # if(count == 5):
+    #     avgfreq = sumfreq/count
+    #     count = 0
+    #     print("Note is: ", findNote(avgfreq))
+    print("Note is: ", findNote(thefreq), "\n")#findNote(thefreq))
 
     # read some more data
     data = wf.readframes(chunk)
@@ -190,20 +211,3 @@ if data:
     stream.write(data)
 stream.close()
 p.terminate()
-
-def findNote(freq):
-
-    mod = 0
-
-    # Iterate through each note's frequency
-    for x in notes:
-        if(freq < x):
-            
-            diff1 = x - freq
-            diff2 = freq - (x-1)
-            if(diff1 <= diff2):
-                note = x
-            else :
-                note = x-1
-            break
-    return note
