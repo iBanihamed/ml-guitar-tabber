@@ -136,7 +136,7 @@ def findNote(freq):
 chunk = 2048
 
 # open up a wave
-wf = wave.open('./data_capture/note_detector/audio_files/file.wav', 'rb')
+wf = wave.open('C:\\Users\\Jorge\\Documents\\GuitarProject\\ml-guitar-tabber\\data_capture\\note_detector\\file.wav', 'rb')
 # Returns sample width in bytes
 swidth = wf.getsampwidth()
 # Returns sampling frequency
