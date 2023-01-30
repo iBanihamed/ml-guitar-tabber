@@ -5,11 +5,13 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
 handCordAmount = 21
-padding = 25
+padding = 50
 xHandCords = [None]*handCordAmount
 yHandCords = [None]*handCordAmount
 count = 0
 captured_frames="./data_capture/captured_frames"
+videoName = "minor7"
+videoPath = f"./data_capture/videos/{videoName}.MP4"
 
 # For static images:
 IMAGE_FILES = []
@@ -20,6 +22,7 @@ with mp_hands.Hands(
   for idx, file in enumerate(IMAGE_FILES):
     # Read an image, flip it around y-axis for correct handedness output (see
     # above).
+    print(idx)
     image = cv2.flip(cv2.imread(file), 1)
     # Convert the BGR image to RGB before processing.
     results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
@@ -53,7 +56,8 @@ with mp_hands.Hands(
         hand_world_landmarks, mp_hands.HAND_CONNECTIONS, azimuth=5)
 
 # For webcam input:
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(videoPath)
+cap = cv2.VideoCapture(0) # Use this to utilize webcam capturing
 with mp_hands.Hands(
     model_complexity=0,
     min_detection_confidence=0.5,
@@ -78,12 +82,12 @@ with mp_hands.Hands(
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     if results.multi_hand_landmarks:
       for hand_landmarks in results.multi_hand_landmarks:
-        mp_drawing.draw_landmarks(
-            image,
-            hand_landmarks,
-            mp_hands.HAND_CONNECTIONS,
-            mp_drawing_styles.get_default_hand_landmarks_style(),
-            mp_drawing_styles.get_default_hand_connections_style())
+        # mp_drawing.draw_landmarks(
+        #     image,
+        #     hand_landmarks,
+        #     mp_hands.HAND_CONNECTIONS,
+        #     mp_drawing_styles.get_default_hand_landmarks_style(),
+        #     mp_drawing_styles.get_default_hand_connections_style())
         for ids, landmrk in enumerate(hand_landmarks.landmark):
             # print(ids, landmrk)
             #cx, cy = landmrk.x * image_width, landmrk.y*image_height
@@ -104,9 +108,9 @@ with mp_hands.Hands(
         handCropped = image[cropY:cropHeight, cropX:cropWidth]
         cv2.imshow('Cropped Hands', handCropped)
 
-        # cv2.imwrite(f"{captured_frames}/handFrame{count}.jpg", handCropped)
-        # print(f'Captured frame {count}: ', success)
-        #count+=1
+        cv2.imwrite(f"{captured_frames}/chords/{videoName}/{videoName}{count}.jpg", handCropped)
+        print(f'Captured frame {count}: ', success)
+        count+=1
       if yHandCordMax > image_height or xHandCordMax > image_width or xHandCordMin< padding or yHandCordMin < padding:
         cv2.destroyWindow('Cropped Hands')
       #cv2.imshow("Cropped Hand", handCropped)
