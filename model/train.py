@@ -28,13 +28,11 @@ n_epochs = 30
 
 torch.manual_seed(24)
 
-data_set_folder = "/tmp/GuitarImages"
-model_path = "./trained_models"
+data_set_folder = "./data_capture/captured_frames/chords"
+model_path = "/Users/vn53q3k/OneDriveWalmartInc/ml-guitar-tabber/model/trained_models"
 # out_model = f'{model_path}/model_ta_{strftime("%Y.%m.%d.%H.%M.%S", gmtime())}.pt'
 out_model = f"{model_path}/model_guitar_tabber.pt"
 
-
-# data_set_folder = "/home/jupyter/data/screenshots2/screenshots"
 # check if CUDA is available
 train_on_gpu = torch.cuda.is_available()
 
