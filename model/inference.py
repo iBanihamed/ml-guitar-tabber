@@ -1,41 +1,25 @@
 from __future__ import division
-import json
 import asyncio
 from operator import itemgetter
-import pandas
 import os
-import shutil
 from progress.bar import Bar
 import numpy as np
-import cv2
-import onnxruntime
-
 
 from model import Net
 import torch
 torch.manual_seed(0)
-import torchvision
 import torchvision.transforms as transforms
 from torch.autograd import Variable
 from PIL import Image, ImageOps, ImageEnhance
 
-from env import settings
-
-# This program takes a set of images and categorizes the failures into a directory
-# reports on number of images that failed as well as what type it predicted it as for each image
-
-config = settings()
 
 class OnnxTester:
     def __init__(self) -> None:
         self.img_dir = "/tmp/ImgScreenshots"
         self.model_dir = "./trained_models"
         self.testImagesDir = "/tmp/TestImages"
-        self.failedImgDir = "/tmp/FailedImages"
-        self.successImgDir = "/tmp/SuccessImages"
-        self.reportDir = "/tmp/report.html"
         self.model = self.model_dir + "/model_guitar_tabber.pt"
-        self.imageType = ["A_chord", "D_chord", "Dmaj7_chord", "G_chord"]
+        self.imageType = ["major", "major7", "minor", "minor7"]
         self.transform = transforms.Compose(
     [transforms.ToTensor(),
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)), transforms.Resize((224, 224))])  # Same as for your validation data, e.g. Resize, ToTensor, Normalize, ...
@@ -54,13 +38,13 @@ class OnnxTester:
 
     def classifyPrediction(self, prediction):
         if prediction.item() == 0:
-            predClass = "A_chord"
+            predClass = "major"
         elif prediction.item() == 1:
-            predClass = "D_chord"
+            predClass = "major7"
         elif prediction.item() == 2:
-            predClass = "Dmaj7_chord"
+            predClass = "minor"
         elif prediction.item() == 3:
-            predClass = "G_chord"
+            predClass = "minor7"
         else:
             predClass = "NODATA"
         return predClass

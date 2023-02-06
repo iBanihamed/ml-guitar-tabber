@@ -12,7 +12,7 @@ for video in os.listdir(guitar_vids):
     success, image = vidcap.read()
     count = 0 
     while success:
-        cv2.imwrite(f"{captured_frames}/{video}frame{count}.jpg", image)
+        cv2.imwrite(f"{captured_frames}/chords/{video}/{video}frame{count}.jpg", image)
         success, image = vidcap.read()
         print(str(vidcap.get(cv2.CAP_PROP_POS_MSEC)))
         print(f'Read frame {count}: ', success)
