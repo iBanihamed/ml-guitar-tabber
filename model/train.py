@@ -123,7 +123,7 @@ def main():
 
         train_loss = train_loss / len(train_loader.sampler)
         # print training/validation statistics
-        if epoch % 10 == 0:
+        if epoch % 1 == 0:
             logging.info("Epoch: {} \tTraining Loss: {:.6f}".format(epoch, train_loss))
 
     logging.info("Done training ... ")
