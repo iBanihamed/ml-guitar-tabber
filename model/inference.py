@@ -30,7 +30,7 @@ class ModelInferencer:
 
     def predict(self, img):
         output = self.model(img)
-        print(output)
+        #print(output)
         pred = torch.argmax(output, 1)
         return pred
 
