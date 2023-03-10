@@ -157,7 +157,8 @@ class FrequencyDetector:
         freq_list = []
         note_list = []
 
-        chunk = 2048
+        # roughly 33 ms
+        chunk = 1470
 
         # open up a wave
         wf = wave.open(input_audio, 'rb')
@@ -197,7 +198,7 @@ class FrequencyDetector:
             #print("Position: ", position)
 
             # Print timestamps
-            timestamp = position/float(RATE)
+            timestamp = (position/float(RATE))*1000
             #print("Timestamp: ", format(timestamp, '.4f'))
 
             # write data out to the audio stream
@@ -234,7 +235,8 @@ class FrequencyDetector:
             # read some more data
             data = wf.readframes(chunk)
 
-            note_list.append([theNote, timestamp])
+            #note_list.append([theNote, timestamp])
+            note_list.append([theNote])
 
         if data:
             stream.write(data)
