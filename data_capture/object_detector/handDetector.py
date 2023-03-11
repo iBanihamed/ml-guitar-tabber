@@ -39,7 +39,8 @@ class HandWatcher():
                     # If loading a video, use 'break' instead of 'continue'.
                     break
                 image_height, image_width, _ = image.shape
-                image = cv2.flip(image, -1)
+                if videoPath:
+                    image = cv2.flip(image, imageFlip)
                 # To improve performance, optionally mark the image as not writeable to
                 # pass by reference.
                 image.flags.writeable = False
