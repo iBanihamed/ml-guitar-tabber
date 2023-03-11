@@ -1,4 +1,3 @@
-# Read in a WAV and find the freq's
 import pyaudio
 import wave
 import numpy as np
@@ -139,7 +138,7 @@ class FrequencyDetector:
         ]
         
         note = 'C0'
-        # Iterate through each note's frequency
+        # Iterate through each note's frequency and match it with the correct frequency
         for x in range(108):
             if(freq <= notes[x][1]):
             
@@ -154,8 +153,7 @@ class FrequencyDetector:
     
     def getFreq(self, input_audio):
 
-        freq_list = []
-        note_list = []
+        noteList = []
 
         # roughly 33 ms
         chunk = 1470
@@ -182,7 +180,7 @@ class FrequencyDetector:
                         channels = wf.getnchannels(),
                         rate = RATE,
                         output = True)
-        print("Number of channels: ", wf.getnchannels())
+        #print("Number of channels: ", wf.getnchannels())
 
         # read some data
         data = wf.readframes(chunk)
@@ -236,12 +234,12 @@ class FrequencyDetector:
             data = wf.readframes(chunk)
 
             #note_list.append([theNote, timestamp])
-            note_list.append([theNote])
+            noteList.append([theNote])
 
         if data:
             stream.write(data)
         stream.close()
         p.terminate()
 
-        return note_list
+        return noteList
     

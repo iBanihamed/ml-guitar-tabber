@@ -9,6 +9,7 @@ videoPath = "./data_capture/videos/major7.MOV" # video directory for saved vids,
 output_path = './data_capture/note_detector/audio_files/audioCut.wav'
 new_audio = './data_capture/note_detector/audio_files/audioFile.wav'
 
+# Extract audio from video file and convert to mono
 freqDetect.extractAudio(videoPath, output_path)
 freqDetect.convertMono(output_path, new_audio)
 frequencies = freqDetect.getFreq(new_audio)
