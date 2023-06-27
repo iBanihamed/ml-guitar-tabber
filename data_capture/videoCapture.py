@@ -3,16 +3,23 @@ import os
 import re
 
 guitar_vids= "./data_capture/videos"
-captured_frames="./data_capture/captured_frames"
 
 for video in os.listdir(guitar_vids):
-    video=video[0:video.find('.')]
-    print(video)
+    # extract string before "." in file name
+    video=video[0:video.find('.')]  
+
+    # Create a path to save the frames to 
+    framesPath = f"./data_capture/captured_frames/{video}"  
+    if not os.path.exists(framesPath):
+        os.mkdir(framesPath)
+
+    # Open up the video for reading
     vidcap= cv2.VideoCapture(f"{guitar_vids}/{video}.mp4")
     success, image = vidcap.read()
     count = 0 
     while success:
-        cv2.imwrite(f"{captured_frames}/chords/{video}/{video}frame{count}.jpg", image)
+        # Write every successful captured frame to a file in framespath
+        cv2.imwrite(f"{framesPath}/{video}frame{count}.jpg", image)
         success, image = vidcap.read()
         print(str(vidcap.get(cv2.CAP_PROP_POS_MSEC)))
         print(f'Read frame {count}: ', success)
