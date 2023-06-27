@@ -16,7 +16,7 @@ class HandWatcher():
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)), transforms.Resize((224, 224))])  # Same as for your validation data, e.g. Resize, ToTensor, Normalize, ...
         self.loggedChords = []
         self.handCordAmount = 21
-        self.padding = 50
+        self.padding = 100
         self.currFrame = '/tmp/currFrame.jpg'  # temporary frame to store captured hand image for referencing to ML model
     
     def getChordShapes(self):
@@ -40,6 +40,7 @@ class HandWatcher():
                     break
                 image_height, image_width, _ = image.shape
                 if videoPath:
+                    imageFlip = -1
                     image = cv2.flip(image, imageFlip)
                 # To improve performance, optionally mark the image as not writeable to
                 # pass by reference.

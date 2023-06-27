@@ -1,5 +1,7 @@
 import cv2
 import mediapipe as mp
+import sys
+import os
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
@@ -9,9 +11,9 @@ padding = 100
 xHandCords = [None]*handCordAmount
 yHandCords = [None]*handCordAmount
 count = 0
-captured_frames="./data_capture/captured_frames"
-videoName = "major7"
-videoPath = f"./data_capture/videos/{videoName}.MOV"
+videoName = "minor"
+videoPath = f"./data_capture/videos/{videoName}.MP4"
+framesPath = f"./data_capture/captured_frames/{videoName}"
 
 # For static images:
 IMAGE_FILES = []
@@ -57,6 +59,8 @@ with mp_hands.Hands(
 
 # For webcam input:
 cap = cv2.VideoCapture(videoPath)
+if not os.path.exists(framesPath):
+        os.mkdir(framesPath)
 #cap = cv2.VideoCapture(0) # Use this to utilize webcam capturing
 with mp_hands.Hands(
     model_complexity=0,
@@ -65,7 +69,7 @@ with mp_hands.Hands(
   while cap.isOpened():
     success, image = cap.read()
     image_height, image_width, _ = image.shape
-    image = cv2.flip(image, -1)
+    #image = cv2.flip(image, 0)
     if not success:
       print("Ignoring empty camera frame.")
       # If loading a video, use 'break' instead of 'continue'.
@@ -108,7 +112,7 @@ with mp_hands.Hands(
         handCropped = image[cropY:cropHeight, cropX:cropWidth]
         cv2.imshow('Cropped Hands', handCropped)
 
-        cv2.imwrite(f"{captured_frames}/chords/{videoName}/{videoName}_{count}.jpg", handCropped)
+        cv2.imwrite(f"{framesPath}/{videoName}_{count}.jpg", handCropped)
         print(f'Captured frame {count}: ', success)
         count+=1
       if yHandCordMax > image_height or xHandCordMax > image_width or xHandCordMin< padding or yHandCordMin < padding:
