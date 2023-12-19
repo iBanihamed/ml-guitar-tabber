@@ -36,12 +36,13 @@ class HandWatcher():
                 success, image = cap.read()
                 if not success:
                     print("Ignoring empty camera frame.")
+                    #self.detectChordShapes(videoPath)
                     # If loading a video, use 'break' instead of 'continue'.
                     break
                 image_height, image_width, _ = image.shape
-                if videoPath:
-                    imageFlip = -1
-                    image = cv2.flip(image, imageFlip)
+                # if videoPath == 1:
+                #     imageFlip = 1 # 0 flip around x axis, 1 flip around y axis, -1 flip around both axiz
+                #     image = cv2.flip(image, imageFlip)
                 # To improve performance, optionally mark the image as not writeable to
                 # pass by reference.
                 image.flags.writeable = False
@@ -53,12 +54,13 @@ class HandWatcher():
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
                 if results.multi_hand_landmarks:
                     for hand_landmarks in results.multi_hand_landmarks:
-                        mp_drawing.draw_landmarks(
-                            image,
-                            hand_landmarks,
-                            mp_hands.HAND_CONNECTIONS,
-                            mp_drawing_styles.get_default_hand_landmarks_style(),
-                            mp_drawing_styles.get_default_hand_connections_style())
+                        #### Commenting out below code to hide hand landmarks
+                        # mp_drawing.draw_landmarks(
+                        #     image,
+                        #     hand_landmarks,
+                        #     mp_hands.HAND_CONNECTIONS,
+                        #     mp_drawing_styles.get_default_hand_landmarks_style(),
+                        #     mp_drawing_styles.get_default_hand_connections_style())
                         for ids, landmrk in enumerate(hand_landmarks.landmark):
                             cx, cy = landmrk.x, landmrk.y
                             xHandCords[ids] = cx
@@ -86,6 +88,13 @@ class HandWatcher():
                         # Write predicted chord shape to frame and display frame
                         cv2.putText(image, chordShape,org=(10, 500),fontFace=cv2.FONT_HERSHEY_SIMPLEX,fontScale=3, color=(0, 255, 0),thickness=3,lineType=2)
                         cv2.imshow('Cropped Hands', handCropped)
+
+                        #Draw hand landmarks
+                        mp_drawing.draw_landmarks(image, 
+                                                  hand_landmarks,
+                                                  mp_hands.HAND_CONNECTIONS, 
+                                                  mp_drawing_styles.get_default_hand_landmarks_style(), 
+                                                  mp_drawing_styles.get_default_hand_connections_style())
 
                     # Check if hands are outside of bounds to prevent program from crashing
                     if yHandCordMax > image_height or xHandCordMax > image_width or xHandCordMin< self.padding or yHandCordMin < self.padding:
