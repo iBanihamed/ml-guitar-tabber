@@ -14,7 +14,7 @@ for video in os.listdir(guitar_vids):
         os.mkdir(framesPath)
 
     # Open up the video for reading
-    vidcap= cv2.VideoCapture(f"{guitar_vids}/{video}.mp4")
+    vidcap= cv2.VideoCapture(f"{guitar_vids}/{video}.mov")
     success, image = vidcap.read()
     count = 0 
     while success:
