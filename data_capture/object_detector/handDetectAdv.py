@@ -12,7 +12,7 @@ xHandCords = [None]*handCordAmount
 yHandCords = [None]*handCordAmount
 count = 0
 videoName = "minor"
-videoPath = f"./data_capture/videos/{videoName}.MP4"
+videoPath = f"./data_capture/videos/{videoName}.mov"
 framesPath = f"./data_capture/captured_frames/{videoName}"
 
 # For static images:
