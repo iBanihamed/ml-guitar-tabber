@@ -7,6 +7,7 @@ import numpy as np
 from model.model import Net
 import torch
 torch.manual_seed(0)
+import torchvision
 import torchvision.transforms as transforms
 from torch.autograd import Variable
 from PIL import Image, ImageOps, ImageEnhance
@@ -16,7 +17,8 @@ class ModelInferencer:
     def __init__(self) -> None:
         self.img_dir = "/tmp/ImgScreenshots"
         self.model_dir = "./model/trained_models/model_guitar_tabber.pt"
-        self.model = Net(4)
+        self.guitar_vids = './data_capture/videos'
+        self.model = Net(len(self.dataset.classes))
         self.model.load_state_dict(torch.load(self.model_dir, map_location='cpu'))
         self.transform = transforms.Compose(
     [transforms.ToTensor(),
