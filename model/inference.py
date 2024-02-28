@@ -18,7 +18,7 @@ class ModelInferencer:
         self.img_dir = "/tmp/ImgScreenshots"
         self.model_dir = "./model/trained_models/model_guitar_tabber.pt"
         self.guitar_vids = './data_capture/videos'
-        self.model = Net(len(self.dataset.classes))
+        self.model = Net(3)
         self.model.load_state_dict(torch.load(self.model_dir, map_location='cpu'))
         self.transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -26,8 +26,8 @@ class ModelInferencer:
         self.chords = {
             0: 'major', 
             1: 'major7',
-            2: 'minor', 
-            3: 'thumb'
+            2: 'minor'
+            # 3: 'thumb'
         }
 
     def convertImage(self, imgPath):
@@ -43,32 +43,3 @@ class ModelInferencer:
 
     def classifyPrediction(self, prediction):
         return self.chords[prediction.item()]
-
-    # def loadModel(self, modelSize, mapLocation='cpu'):
-    #     self.model = Net(modelSize)
-    #     self.mapLocation = mapLocation
-    #     self.model.load_state_dict(torch.load(self.model_dir, map_location='cpu'))
-
-    # def test(self):
-    #     model = Net(4)
-    #     model.load_state_dict(torch.load(self.model, map_location='cpu'))
-    #     for imageClass in os.listdir(self.testImagesDir):
-    #         classDir = os.path.join(self.testImagesDir, imageClass)
-    #         images = os.listdir(classDir)
-    #         progressBar = Bar(imageClass, max=len(images))
-    #         print(f"Calculating for {imageClass} class")
-    #         for image in images:
-    #             imgPath = os.path.join(classDir, image)
-    #             img = self.convertImage(imgPath)
-    #             prediction = self.predict(model, img)
-    #             predictionClass = self.classifyPrediction(prediction)
-    #             progressBar.message = f"Image: {image} |||| Model calculates it as: {predictionClass}"
-    #             progressBar.next()
-    #         progressBar.finish()
-
-# async def main():
-#     modelTester = ModelInferencer()
-#     results = modelTester.test()
-
-
-# asyncio.run(main())
