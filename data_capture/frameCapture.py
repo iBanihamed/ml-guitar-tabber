@@ -2,7 +2,7 @@ import cv2
 import os
 import re
 from object_detector.neckDetect import LineDetector
-from object_detector.handDetectAdv import HandDetect
+from object_detector.handDetector import HandWatcher
 
 guitar_vids= "./data_capture/videos"
 
@@ -21,7 +21,7 @@ for video in os.listdir(guitar_vids):
     count = 0 
     while success:
         # Write every successful captured frame to a file in framespath
-        cv2.imwrite(f"{framesPath}/{video}frame{count}.jpg", LineDetector().run(HandDetect().cropHand(image)))
+        cv2.imwrite(f"{framesPath}/{video}frame{count}.jpg", LineDetector().run(HandWatcher().cropHand(image)))
         success, image = vidcap.read()
         print(str(vidcap.get(cv2.CAP_PROP_POS_MSEC)))
         print(f'Read frame {count}: ', success)
