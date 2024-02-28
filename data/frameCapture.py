@@ -1,8 +1,8 @@
 import cv2
 import os
 import re
-from object_detector.neckDetect import LineDetector
-from object_detector.handDetector import HandWatcher
+from detectors.visual.neckDetect import LineDetector
+from detectors.visual.handDetect import HandWatcher
 
 guitar_vids= "./data_capture/videos"
 
