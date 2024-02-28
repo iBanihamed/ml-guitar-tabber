@@ -1,8 +1,7 @@
-from data_capture.object_detector.handDetector import HandWatcher
-from data_capture.object_detector.neckDetect import LineDetector
-# from data_capture.note_detector.detectFrequency import FrequencyDetector
+from detectors.visual.handDetect import HandWatcher
+from detectors.visual.neckDetect import LineDetector
+from detectors.audio.noteDetect import NoteDetector
 
-# freqDetect = FrequencyDetector()
 neckDetect = LineDetector()
 chordDetect = HandWatcher()
 
